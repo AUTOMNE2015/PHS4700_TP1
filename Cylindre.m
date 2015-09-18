@@ -16,6 +16,10 @@ classdef Cylindre
             obj.Hauteur = Hauteur;
             obj.Position = [x y z];
         end
+        
+        function y = CentreDeMasse(obj)
+            y = obj.Position;
+        end
     end
     
 end

@@ -1,7 +1,10 @@
 % Main function.
 function main
-    patineur1 = Pantin;
-    patineur2 = Pantin;
+    patineur1 = Pantin(false);
+    patineur2 = Pantin(true);
+    
+    patineur1.Draw();
+    patineur2.Draw();
     
     fprintf(questionA(patineur1, patineur2));
     fprintf(questionB(patineur1, patineur2));
