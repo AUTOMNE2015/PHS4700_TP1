@@ -10,10 +10,10 @@ classdef Sphere
     
     methods
         % Constructeur.
-        function obj = Sphere(MasseVolumique, Rayon, x, y, z)
+        function obj = Sphere(MasseVolumique, Rayon, pos)
             obj.MasseVolumique = MasseVolumique;
             obj.Rayon = Rayon;
-            obj.Position = [x y z];
+            obj.Position = pos;
         end
         
         % Centre de masse de la sphere.

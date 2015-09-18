@@ -1,30 +1,24 @@
 classdef Pantin
     properties (Constant)
+       
         LongueurMembre = 0.75;
         MVolMembre = 1052;
         MVolCorps = 953;
         
-         RayonJambe = 0.06;
-%         CMJambeD = [-10 0 LongueurMembre/2]; 
- %        CMJambeG = [10 0 LongueurMembre/2]; 
-%         
-%         RayonTronc = 0.15;
-%         LongueurTronc = 0.7;
-%         CMTronc = [0 0 (LongueurMembre+LongueurTronc/2)];
-%         
-%         RayonCou = 0.04;
-%         LongueurCou = 0.1;
-%         CMCou = [0 0 (LongueurMembre+LongueurTronc+LongueurCou/2)];
-%         
-%         RayonTete = 0.1;
-%         MVolTete = 1056;
-%         CMTete = [0 0 (LongueurMembre+LongueurTronc+LongueurCou+RayonTete)];
-%         
-%         RayonBras = 0.03;
-%         CMBrasDRepos = [-(RayonTronc + RayonBras) 0 (LongueurMembre/2 + LongueurTronc)];
-%         CMBrasGRepos = [(RayonTronc + RayonBras) 0 (LongueurMembre/2 + LongueurTronc)];
-%         CMBrasDLeve = [-(RayonTronc + RayonBras) 0 (LongueurMembre + LongueurTronc - RayonBras)];
-%         CMBrasGLeve = [(RayonTronc + LongueurMembre/2) 0 (LongueurMembre + LongueurTronc - RayonBras)];
+        RayonJambe = 0.06;
+        
+        RayonTronc = 0.15;
+        LongueurTronc = 0.7;
+        
+        RayonCou = 0.04;
+        LongueurCou = 0.1;
+        
+        RayonTete = 0.1;
+        MVolTete = 1056;
+        
+        RayonBras = 0.03;
+        
+
         
     end
     
@@ -38,6 +32,16 @@ classdef Pantin
         Tete;
         
         isBrasLeve;
+        
+        CMJambeD; 
+        CMJambeG; 
+        CMTronc;
+        CMCou;
+        CMTete;
+        CMBrasDRepos;
+        CMBrasGRepos;
+        CMBrasDLeve;
+        CMBrasGLeve;
     end
     
     methods
@@ -47,14 +51,28 @@ classdef Pantin
             else
                 error('le parametre doit etre 0 ou 1');
             end
-            
-            obj.Cou = Cylindre(953, 0.04, 0.1, 1, 1, 1);
-            obj.Tronc = Cylindre(953, 0.15, 0.7, 1, 1, 1);
-            obj.JambeD = Cylindre(1052, 0.06, 0.75, 1, 1, 1);
-            obj.JambeG = Cylindre(1052, 0.06, 0.75, 1, 1, 1);
-            obj.BrasD = Cylindre(1052, 0.03, 0.75, 1, 1, 1);
-            obj.BrasG = Cylindre(1052, 0.03, 0.75, 1, 1, 1);
-            obj.Tete = Sphere(1056, 0.1, 1,1,1);
+                   
+        obj.CMJambeD = [-10 0 obj.LongueurMembre/2]; 
+        obj.CMJambeG = [10 0 obj.LongueurMembre/2]; 
+        obj.CMTronc = [0 0 (obj.LongueurMembre+obj.LongueurTronc/2)];
+        obj.CMCou = [0 0 (obj.LongueurMembre+obj.LongueurTronc+obj.LongueurCou/2)];
+        obj.CMTete = [0 0 (obj.LongueurMembre+obj.LongueurTronc+obj.LongueurCou+obj.RayonTete)];
+        obj.CMBrasDRepos = [-(obj.RayonTronc + obj.RayonBras) 0 (obj.LongueurMembre/2 + obj.LongueurTronc)];
+        obj.CMBrasGRepos = [(obj.RayonTronc + obj.RayonBras) 0 (obj.LongueurMembre/2 + obj.LongueurTronc)];
+        obj.CMBrasDLeve = [-(obj.RayonTronc + obj.RayonBras) 0 (obj.LongueurMembre + obj.LongueurTronc - obj.RayonBras)];
+        obj.CMBrasGLeve = [(obj.RayonTronc + obj.LongueurMembre/2) 0 (obj.LongueurMembre + obj.LongueurTronc - obj.RayonBras)];
+  
+            obj.Cou = Cylindre(953, 0.04, 0.1, obj.CMCou);
+            obj.Tronc = Cylindre(953, 0.15, 0.7, obj.CMTronc);
+            obj.JambeD = Cylindre(1052, 0.06, 0.75, obj.CMJambeD);
+            obj.JambeG = Cylindre(1052, 0.06, 0.75, obj.CMJambeG);
+            if(IsBrasLeve == 1)
+                obj.BrasD = Cylindre(1052, 0.03, 0.75, obj.CMBrasDLeve);
+            else
+                obj.BrasD = Cylindre(1052, 0.03, 0.75, obj.CMBrasDRepos);
+            end
+            obj.BrasG = Cylindre(1052, 0.03, 0.75, obj.CMBrasGRepos);
+            obj.Tete = Sphere(1056, 0.1, obj.CMTete);
         end
 		
         function Draw(obj)
