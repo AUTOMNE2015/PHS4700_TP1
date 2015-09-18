@@ -1,0 +1,24 @@
+% Main function.
+function main
+    fprintf(questionA());
+    fprintf(questionB());
+    fprintf(questionC());
+    fprintf(questionD());
+end
+
+function y = questionA()
+y = 'a)\n';
+y = strcat(y, 'pa
+end
+
+function y = questionB()
+y = 'b)\n';
+end
+
+function y = questionC()
+y = 'c)\n';
+end
+
+function y = questionD()
+y = 'd)\n';
+end
