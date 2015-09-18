@@ -10,6 +10,7 @@ classdef Cylindre
     end
     
     methods
+        % Constructeur.
         function obj = Cylindre(MasseVolumique, Rayon, Hauteur, x, y, z)
             obj.MasseVolumique = MasseVolumique;
             obj.Rayon = Rayon;
@@ -17,8 +18,19 @@ classdef Cylindre
             obj.Position = [x y z];
         end
         
+        % Centre de masse du cylindre.
         function y = CentreDeMasse(obj)
             y = obj.Position;
+        end
+        
+        % Masse du cylindre.
+        function y = Masse(obj)
+            y = obj.Volume() * obj.MasseVolumique;
+        end
+        
+        % Volume du cylindre.
+        function y = Volume(obj)
+            y = pi * obj.Rayon^2 * obj.Hauteur;
         end
     end
     
