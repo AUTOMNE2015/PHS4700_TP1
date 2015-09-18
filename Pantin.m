@@ -59,7 +59,7 @@ classdef Pantin
         obj.CMTete = [0 0 (obj.LongueurMembre+obj.LongueurTronc+obj.LongueurCou+obj.RayonTete)];
         obj.CMBrasDRepos = [-(obj.RayonTronc + obj.RayonBras) 0 (obj.LongueurMembre/2 + obj.LongueurTronc)];
         obj.CMBrasGRepos = [(obj.RayonTronc + obj.RayonBras) 0 (obj.LongueurMembre/2 + obj.LongueurTronc)];
-        obj.CMBrasDLeve = [-(obj.RayonTronc + obj.RayonBras) 0 (obj.LongueurMembre + obj.LongueurTronc - obj.RayonBras)];
+        obj.CMBrasDLeve = [-(obj.RayonTronc + obj.LongueurMembre/2) 0 (obj.LongueurMembre + obj.LongueurTronc - obj.RayonBras)];
         obj.CMBrasGLeve = [(obj.RayonTronc + obj.LongueurMembre/2) 0 (obj.LongueurMembre + obj.LongueurTronc - obj.RayonBras)];
   
             obj.Cou = Cylindre(953, 0.04, 0.1, obj.CMCou);
@@ -118,19 +118,21 @@ classdef Pantin
         end
         
         function y = CentreDeMasse(obj)
-            total = obj.Cou.Masse + obj.Tronc.Masse + obj.JambeD.Masse + obj.JambeG.Masse + obj.BrasD.Masse + obj.BrasG.Masse;
+            total = obj.Cou.Masse + obj.Tronc.Masse + obj.JambeD.Masse + obj.JambeG.Masse + obj.BrasD.Masse + obj.BrasG.Masse + obj.Tete.Masse;
             A = obj.Cou.CentreP() + obj.Tronc.CentreP() + obj.JambeD.CentreP() + obj.JambeG.CentreP() + obj.BrasD.CentreP() + obj.BrasG.CentreP() + obj.Tete.CentreP();
             y = A/total;
         end
         
         function y = MomentInertie(obj)
-            y = [0 0 0; 0 0 0; 0 0 0];
+            y = obj.Cou.momentInertieT(obj.CentreDeMasse()) + obj.Tronc.momentInertieT(obj.CentreDeMasse()) + obj.JambeD.momentInertieT(obj.CentreDeMasse()) + obj.JambeG.momentInertieT(obj.CentreDeMasse()) + obj.BrasD.momentInertieT(obj.CentreDeMasse()) + obj.BrasG.momentInertieT(obj.CentreDeMasse()) + obj.Tete.momentInertieT(obj.CentreDeMasse());
         end
-        function y = AccelerationAngulaire(obj, vx, vy, vz)
-            ax = 0;
-            ay = 0;
-            az = 0;
-            y = [ax, ay, az];
+        
+        function y = AccelerationAngulaire(obj, w)
+            r = [0 obj.RayonTete obj.CMTete(3)]';
+            F = [0 -200 0]';
+            T = cross((r - obj.CentreDeMasse()'), F);
+            L = obj.MomentInertie()*w;
+            y = obj.MomentInertie()\(T + cross(L, w));
         end
 
     end

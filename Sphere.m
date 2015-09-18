@@ -35,6 +35,19 @@ classdef Sphere
         function y = CentreP(obj)
             y = obj.CentreDeMasse() * obj.Masse();
         end
+        
+        % Moment d'Inertie  de la sphere par rapport a son propre centre de
+        % masse
+        function y = momentInertie(obj)
+            y = [(2*obj.Masse()*obj.Rayon^2)/5 0 0; 0 (2*obj.Masse()*obj.Rayon^2)/5 0; 0 0 (2*obj.Masse()*obj.Rayon^2)/5];
+        end
+        
+        % Moment d'inertie de la sphere par rapport a un autre centre de
+        % masse situer a la position "vecteur"
+        function y = momentInertieT(obj, vecteur)
+            d = vecteur - obj.Position;
+            y = obj.momentInertie() + obj.Masse()*[d(2)^2+d(3)^2 -d(1)*d(2) -d(1)*d(3); -d(2)*d(1) d(1)^2+d(3)^2 -d(2)*d(3); -d(3)*d(1) -d(3)*d(2) d(1)^2+d(2)^2];
+        end
     end
     
 end
