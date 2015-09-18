@@ -1,7 +1,34 @@
 classdef Pantin
-    properties
-        RayonTete = 0.1;
+    properties (Constant)
+        LongueurMembre = 0.75;
+        MVolMembre = 1052;
+        MVolCorps = 953;
         
+        RayonJambe = 0.06;
+        CMJambeD = [-10 0 LongueurMembre/2]; 
+        CMJambeG = [10 0 LongueurMembre/2]; 
+        
+        RayonTronc = 0.15;
+        LongueurTronc = 0.7;
+        CMTronc = [0 0 (LongueurMembre+LongueurTronc/2)];
+        
+        RayonCou = 0.04;
+        LongueurCou = 0.1;
+        CMCou = [0 0 (LongueurMembre+LongueurTronc+LongueurCou/2)];
+        
+        RayonTete = 0.1;
+        MVolTete = 1056;
+        CMTete = [0 0 (LongueurMembre+LongueurTronc+LongueurCou+RayonTete)];
+        
+        RayonBras = 0.03;
+        CMBrasDRepos = [-(RayonTronc + RayonBras) 0 (LongueurMembre/2 + LongueurTronc)];
+        CMBrasGRepos = [(RayonTronc + RayonBras) 0 (LongueurMembre/2 + LongueurTronc)];
+        CMBrasDLeve = [-(RayonTronc + RayonBras) 0 (LongueurMembre + LongueurTronc - RayonBras)];
+        CMBrasGLeve = [(RayonTronc + LongueurMembre/2) 0 (LongueurMembre + LongueurTronc - RayonBras)];
+        
+    end
+    
+    properties
         Cou;
         Tronc;
         JambeD;
@@ -20,12 +47,12 @@ classdef Pantin
                 error('le parametre doit etre 0 ou 1');
             end
             
-            obj.Cou = Cylindre(953, 0.04, 0.1, 1, 1, 1);
-            obj.Tronc = Cylindre(953, 0.15, 0.7, 1, 1, 1);
-            obj.JambeD = Cylindre(1052, 0.06, 0.75, 1, 1, 1);
-            obj.JambeG = Cylindre(1052, 0.06, 0.75, 1, 1, 1);
-            obj.BrasD = Cylindre(1052, 0.03, 0.75, 1, 1, 1);
-            obj.BrasG = Cylindre(1052, 0.03, 0.75, 1, 1, 1);
+            obj.Cou = Cylindre(obj.MVolCorps, obj.RayonCou, obj.LongueurCou, 1, 1, 1);
+            obj.Tronc = Cylindre(obj.MVolCorps, obj.RayonTronc, obj.LongueurTronc, 1, 1, 1);
+            obj.JambeD = Cylindre(obj.MVolMembre, obj.RayonJambe, obj.LongueurMembre, 1, 1, 1);
+            obj.JambeG = Cylindre(obj.MVolMembre, obj.RayonJambe, obj.LongueurMembre, 1, 1, 1);
+            obj.BrasD = Cylindre(obj.MVolMembre, obj.RayonBras, obj.LongueurMembre, 1, 1, 1);
+            obj.BrasG = Cylindre(obj.MVolMembre, obj.RayonBras, obj.LongueurMembre, 1, 1, 1);
         end
 		
         function Draw(obj)
@@ -71,7 +98,9 @@ classdef Pantin
         end
         
         function y = CentreDeMasse(obj)
-            y = [0, 0, 0];
+            total = obj.Cou.Masse + obj.Tronc.Masse + obj.JambeD.Masse + obj.JambeG.Masse + obj.BrasD.Masse + obj.BrasG.Masse;
+            A = obj.Cou.CentreP() + obj.Tronc.CentreP() + obj.JambeD.CentreP() + obj.JambeG.CentreP() + obj.BrasD.CentreP() + obj.BrasG.CentreP() + obj.Tete;
+            y = A/total;
         end
         function y = MomentInertie(obj)
             y = [0 0 0; 0 0 0; 0 0 0];
