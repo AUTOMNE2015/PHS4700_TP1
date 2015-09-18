@@ -71,8 +71,11 @@ classdef Pantin
         end
         
         function y = CentreDeMasse(obj)
-            y = [0, 0, 0];
+            total = obj.Cou.Masse + obj.Tronc.Masse + obj.JambeD.Masse + obj.JambeG.Masse + obj.BrasD.Masse + obj.BrasG.Masse;
+            A = obj.Cou.CentreP() + obj.Tronc.CentreP() + obj.JambeD.CentreP() + obj.JambeG.CentreP() + obj.BrasD.CentreP() + obj.BrasG.CentreP();
+            y = A/total;
         end
+        
         function y = MomentInertie(obj)
             y = [0 0 0; 0 0 0; 0 0 0];
         end

@@ -1,15 +1,15 @@
 % Main function.
 function main
-    patineur1 = Pantin(false);
-    patineur2 = Pantin(true);
+    patineur1 = Pantin(0);
+    patineur2 = Pantin(1);
     
-    patineur1.Draw();
-    patineur2.Draw();
-    
+    %patineur1.Draw();
+    %patineur2.Draw();
+    fprintf(mat2str(patineur1.CentreDeMasse()));
     fprintf(questionA(patineur1, patineur2));
-    fprintf(questionB(patineur1, patineur2));
-    fprintf(questionC(patineur1, patineur2));
-    fprintf(questionD(patineur1, patineur2));
+    %fprintf(questionB(patineur1, patineur2));
+    %fprintf(questionC(patineur1, patineur2));
+    %fprintf(questionD(patineur1, patineur2));
 end
 
 function y = questionA(patineur1, patineur2)
