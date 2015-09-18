@@ -1,5 +1,5 @@
 % Main function.
-function main
+function Main
     patineur1 = Pantin(0);
     patineur2 = Pantin(1);
     
