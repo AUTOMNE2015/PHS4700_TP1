@@ -7,15 +7,17 @@ classdef Cylindre
         Rayon;
         Hauteur;
         Position;
+        estLeve;
     end
     
     methods
         % Constructeur.
-        function obj = Cylindre(MasseVolumique, Rayon, Hauteur, position)
+        function obj = Cylindre(MasseVolumique, Rayon, Hauteur, position, estLeve)
             obj.MasseVolumique = MasseVolumique;
             obj.Rayon = Rayon;
             obj.Hauteur = Hauteur;
             obj.Position = position;
+            obj.estLeve = estLeve;
         end
         
         % Centre de masse du cylindre.
@@ -41,7 +43,11 @@ classdef Cylindre
         % Moment d'Inertie du cylindre par rapport a son propre centre de
         % masse
         function y = momentInertie(obj)
-            y = [(obj.Masse()*obj.Rayon^2)/4+(obj.Masse()*obj.Hauteur^2)/12 0 0; 0 (obj.Masse()*obj.Rayon^2)/4+(obj.Masse()*obj.Hauteur^2)/12 0; 0 0 obj.Masse()*obj.Rayon*obj.Rayon/2];
+            if(obj.estLeve == 0)
+                y = [(obj.Masse()*obj.Rayon^2)/4+(obj.Masse()*obj.Hauteur^2)/12 0 0; 0 (obj.Masse()*obj.Rayon^2)/4+(obj.Masse()*obj.Hauteur^2)/12 0; 0 0 obj.Masse()*obj.Rayon*obj.Rayon/2];
+            else
+                y = [obj.Masse()*obj.Rayon*obj.Rayon/2 0 0; 0 (obj.Masse()*obj.Rayon^2)/4+(obj.Masse()*obj.Hauteur^2)/12 0; 0 0 (obj.Masse()*obj.Rayon^2)/4+(obj.Masse()*obj.Hauteur^2)/12];
+            end
         end
         
         % Moment d'inertie du cylindre par rapport a un autre centre de

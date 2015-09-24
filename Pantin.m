@@ -62,16 +62,17 @@ classdef Pantin
         obj.CMBrasDLeve = [-(obj.RayonTronc + obj.LongueurMembre/2) 0 (obj.LongueurMembre + obj.LongueurTronc - obj.RayonBras)];
         obj.CMBrasGLeve = [(obj.RayonTronc + obj.LongueurMembre/2) 0 (obj.LongueurMembre + obj.LongueurTronc - obj.RayonBras)];
   
-            obj.Cou = Cylindre(953, 0.04, 0.1, obj.CMCou);
-            obj.Tronc = Cylindre(953, 0.15, 0.7, obj.CMTronc);
-            obj.JambeD = Cylindre(1052, 0.06, 0.75, obj.CMJambeD);
-            obj.JambeG = Cylindre(1052, 0.06, 0.75, obj.CMJambeG);
+            obj.Cou = Cylindre(953, 0.04, 0.1, obj.CMCou, 0);
+            obj.Tronc = Cylindre(953, 0.15, 0.7, obj.CMTronc, 0);
+            obj.JambeD = Cylindre(1052, 0.06, 0.75, obj.CMJambeD, 0);
+            obj.JambeG = Cylindre(1052, 0.06, 0.75, obj.CMJambeG, 0);
             if(IsBrasLeve == 1)
-                obj.BrasD = Cylindre(1052, 0.03, 0.75, obj.CMBrasDLeve);
+                %todo: rotate arm
+                obj.BrasD = Cylindre(1052, 0.03, 0.75, obj.CMBrasDLeve, 1);
             else
-                obj.BrasD = Cylindre(1052, 0.03, 0.75, obj.CMBrasDRepos);
+                obj.BrasD = Cylindre(1052, 0.03, 0.75, obj.CMBrasDRepos, 0);
             end
-            obj.BrasG = Cylindre(1052, 0.03, 0.75, obj.CMBrasGRepos);
+            obj.BrasG = Cylindre(1052, 0.03, 0.75, obj.CMBrasGRepos, 0);
             obj.Tete = Sphere(1056, 0.1, obj.CMTete);
         end
 		
@@ -132,6 +133,7 @@ classdef Pantin
             F = [0 -200 0]';
             T = cross((r - obj.CentreDeMasse()'), F);
             L = obj.MomentInertie()*w;
+            %Replace inv(A)*b with A\b
             y = obj.MomentInertie()\(T + cross(L, w));
         end
 
